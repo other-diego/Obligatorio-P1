@@ -66,13 +66,14 @@ int main() {
             scanf("%d", &a);
              printf("Ingrese otro numero ");
             scanf("%d", &b);
-            if (b == 0)
+            while (b == 0)
             {
-                printf("Error no se puede dividir entre 0, Ingrese otro numero ");
+                printf("Error: division entre 0, Ingrese otro numero ");
                 scanf("%d", &b);
             }
             resultado = a / (double)b;
-            printf("La division de %d / %d es %f \n", a, b, resultado);
+            printf("La division de %d / %d es %2f \n", a, b, resultado);
+            printf("El modulo es: %d\n", a % b);
             break;
         case 5:
             resultado = 1;
@@ -89,7 +90,7 @@ int main() {
             resultado = 1;
             printf("Ingrese un numero entre 1 y 20: ");
             scanf("%d", &a);
-          if(a > 20 || a < 0){
+          while (a > 20 || a < 0){
             printf("Numero invalido ingrese otro: ");
              scanf("%d", &a);
           }
@@ -182,8 +183,8 @@ int main() {
                 memoria = 0;
                 printf("Memoria borrada.\n");
                 break;
-                    default:
-                        break;
+        default:
+            break;
         }
                     
     } while (opcion != 0);
