@@ -1,55 +1,115 @@
 #include <stdio.h>
 
-int main(void) {
+int main() {
     int numero;
-    int i = 0;
     int cantidad = 0;
     int arr[100];
     int suma = 0;
-    double promedio;
+    double promedio = 0;
+    int maximo;
     int minimo;
-    int maximo; 
     
-    printf("Ingrese numeros (0 termina, maximo 100):\n");
+    printf("Ingrese numeros (0 termina, maximo 100): ");
     scanf("%d", &numero);
 
-    while(numero == 0) {
+    if (numero == 0){
+        printf("Sin datos");
+        return 0;
+    }
 
-        printf("Sin datos\n");
-        printf("Ingrese otros numeros\n");
+    do {
+        arr[cantidad] = numero;
+        cantidad++;
         scanf("%d", &numero);
-    }
-        while(numero != 0) {
-         arr[i] = numero;
-         i++;
-         cantidad++;
-         scanf("%d", &numero);
-    }
-        
-        minimo = arr[0];
-        maximo = arr[0];
+    } while (numero != 0 && cantidad < 100);
     
-    
-        for (int i = 0; i < cantidad; i++) {
-          
-            suma = suma + arr[i];
-            promedio = (double)suma/cantidad;
-
-            if(arr[i] < minimo) {
-                minimo = arr[i];
+    for (int i = 0; i < cantidad - 1; i++){
+        for(int j = 0; j < cantidad - i - 1; j++){
+            if (arr[j] > arr[j + 1]){
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
             }
+        }
+    }
 
-            if(arr[i] > maximo) {
-                maximo = arr[i];
-            }
+    minimo = arr[0];
+    maximo = arr[cantidad - 1];
 
+    for (int i = 0; i < cantidad; i++) {
+        suma = suma + arr[i];
+    }
+
+    promedio = (double)suma / cantidad;
+
+   double mediana;
+
+    if (cantidad % 2 == 1) {
+        mediana = arr[cantidad / 2];
+    } else {
+        mediana = (arr[cantidad / 2 - 1] + arr[cantidad / 2]) / 2.0;
+    }
+
+    int moda = arr[0];
+    int maxFrecuencia = 1;
+    int duplicados = 0;
+
+    int i = 0;
+
+    while (i < cantidad) {
+        int valorActual = arr[i];
+        int frecuencia = 0;
+
+        while (i < cantidad && arr[i] == valorActual) {
+            frecuencia++;
+            i++;
         }
 
+        if (frecuencia > 1) {
+            duplicados++;
+        }
 
-    printf("La cantidad de numeros es: %d\n", cantidad);
-    printf("La suma es: %d\n", suma);
-    printf("El promedio es: %.2f\n", promedio);
-    printf("El minimo es: %d\n", minimo);
-    printf("El maximo es: %d\n", maximo);
-return 0;
+        if (frecuencia > maxFrecuencia) {
+            maxFrecuencia = frecuencia;
+            moda = valorActual;
+        }
+
+       else if(frecuencia == maxFrecuencia && valorActual < moda) {
+            moda = valorActual;
+       }
+    }
+
+    printf("\n === RESULTADOS === \n");
+    printf("Cantidad: %d Suma: %d\n", cantidad, suma);
+    printf("Promedio: %.2f Min: %d Max: %d\n", promedio, minimo, maximo);
+    printf("Mediana: %.2f  ", mediana);
+
+    if (maxFrecuencia == 1) {
+            printf("No hay moda\n");
+        } else {
+            printf("Moda: %d (%d veces)\n", moda, maxFrecuencia);
+        }
+    
+    printf("Duplicados: %d\n", duplicados);
+    printf("\n === HISTOGRAMA === \n");
+
+        i = 0;
+
+    while (i < cantidad) {
+        int valorActual = arr[i];
+        int frecuencia = 0;
+
+        while (i < cantidad && arr[i] == valorActual) {
+            frecuencia++;
+            i++;
+        }
+
+        printf("%d ", valorActual);
+
+        for (int j = 0; j < frecuencia; j++) {
+            printf("#");
+        }
+
+        printf("\n");
+    }
 }
