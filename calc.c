@@ -29,7 +29,6 @@ int main() {
              printf("Ingrese otro numero");
             scanf("%d", &b);
             resultado = a + b;
-            memoria += resultado;
             printf("La suma de %d + %d es %f \n", a, b, resultado);
             break;
         case 2:
@@ -38,7 +37,6 @@ int main() {
              printf("Ingrese otro numero ");
             scanf("%d", &b);
             resultado = a - b;
-            memoria += resultado;
             printf("La resta de %d - %d es %f \n", a, b, resultado);
             break;
         case 3:
@@ -47,7 +45,6 @@ int main() {
              printf("Ingrese otro numero ");
             scanf("%d", &b);
             resultado = a * b;
-            memoria += resultado;
             printf("La multiplicacion de %d x %d es %f \n", a, b, resultado);
             break;
         case 4:
@@ -55,13 +52,14 @@ int main() {
             scanf("%d", &a);
              printf("Ingrese otro numero ");
             scanf("%d", &b);
-            if (b == 0)
+            while (b == 0)
             {
-                printf("Error no se puede dividir entre 0, Ingrese otro numero ");
+                printf("Error: division entre 0, Ingrese otro numero ");
                 scanf("%d", &b);
             }
             resultado = a / (double)b;
-            printf("La division de %d / %d es %f \n", a, b, resultado);
+            printf("La division de %d / %d es %2f \n", a, b, resultado);
+            printf("El modulo es: %d\n", a % b);
             break;
         case 5:
             resultado = 1;
@@ -73,11 +71,12 @@ int main() {
                resultado = resultado*a;
            }
            printf("%2.lf \n", resultado);
+           break;
          case 6:
             resultado = 1;
             printf("Ingrese un numero entre 1 y 20: ");
             scanf("%d", &a);
-          if(a > 20 || a < 0){
+          while (a > 20 || a < 0){
             printf("Numero invalido ingrese otro: ");
              scanf("%d", &a);
           }
@@ -85,6 +84,7 @@ int main() {
                resultado = resultado*i;
            }
            printf("%2.lf \n", resultado);
+           break;
         case 7:
             int esPrimo = 1;
             printf("Ingrese un numero \n");
@@ -107,6 +107,7 @@ int main() {
                     printf("El numero no es primo \n");
                 }
           }
+              break;
         default:
             break;
         }
