@@ -73,12 +73,23 @@ int main() {
             maxFrecuencia = frecuencia;
             moda = valorActual;
         }
+
+       else if(frecuencia == maxFrecuencia && valorActual < moda) {
+            moda = valorActual;
+       }
     }
 
     printf("\n === RESULTADOS === \n");
     printf("Cantidad: %d Suma: %d\n", cantidad, suma);
     printf("Promedio: %.2f Min: %d Max: %d\n", promedio, minimo, maximo);
-    printf("Mediana: %.2f Moda: %d (%d veces)\n", mediana, moda, maxFrecuencia);
+    printf("Mediana: %.2f  ", mediana);
+
+    if (maxFrecuencia == 1) {
+            printf("No hay moda\n");
+        } else {
+            printf("Moda: %d (%d veces)\n", moda, maxFrecuencia);
+        }
+    
     printf("Duplicados: %d\n", duplicados);
     printf("\n === HISTOGRAMA === \n");
 
