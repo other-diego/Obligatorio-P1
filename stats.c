@@ -9,7 +9,8 @@ int main() {
     int maximo;
     int minimo;
     
-    printf("Ingrese numeros (0 termina, maximo 100): ");
+    printf("Ingrese numeros (0 termina, maximo 100): \n");
+    printf("> ");
     scanf("%d", &numero);
 
     if (numero == 0){
@@ -17,10 +18,20 @@ int main() {
         return 0;
     }
 
+    arr[cantidad] = numero;
+    cantidad++;
+
     do {
+        printf("> ");
+        scanf("%d", &numero);
+
+        if(numero == 0){
+            break;
+        }
+
         arr[cantidad] = numero;
         cantidad++;
-        scanf("%d", &numero);
+
     } while (numero != 0 && cantidad < 100);
     
     for (int i = 0; i < cantidad - 1; i++){
@@ -42,7 +53,7 @@ int main() {
 
     promedio = (double)suma / cantidad;
 
-   double mediana;
+    double mediana;
 
     if (cantidad % 2 == 1) {
         mediana = arr[cantidad / 2];
@@ -79,19 +90,12 @@ int main() {
        }
     }
 
-    printf("\n === RESULTADOS === \n");
-    printf("Cantidad: %d Suma: %d\n", cantidad, suma);
-    printf("Promedio: %.2f Min: %d Max: %d\n", promedio, minimo, maximo);
-    printf("Mediana: %.2f  ", mediana);
-
-    if (maxFrecuencia == 1) {
-            printf("No hay moda\n");
-        } else {
-            printf("Moda: %d (%d veces)\n", moda, maxFrecuencia);
-        }
-    
+    printf("\n===== RESULTADOS =====\n");
+    printf("Cantidad: %d    Suma: %d\n", cantidad, suma);
+    printf("Promedio: %.2f    Min: %d    Max: %d\n", promedio, minimo, maximo);
+    printf("Mediana: %g    Moda: %d (%d veces)\n", mediana, moda, maxFrecuencia);
     printf("Duplicados: %d\n", duplicados);
-    printf("\n === HISTOGRAMA === \n");
+    printf("\n===== HISTOGRAMA =====\n");
 
         i = 0;
 
@@ -104,7 +108,7 @@ int main() {
             i++;
         }
 
-        printf("%d ", valorActual);
+        printf("%4d  ", valorActual);
 
         for (int j = 0; j < frecuencia; j++) {
             printf("#");
