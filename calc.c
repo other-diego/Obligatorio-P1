@@ -13,17 +13,24 @@ int main() {
     int historial[20];
     int contadores[8] = {0};
     int total_ops = 0;
-
-
-    printf("===== CALCULADORA v1=====\n");
+    int overflow;
+    int multiplicacion;
+    int potencia;
+    int factorial;
+    int primerA;
+    int primerB;
+    int cantidad;
+    int masUsada;
+    int posiciones;
+    
+    do
+    {
+        printf("===== CALCULADORA v1=====\n");
         printf("1) Suma                     5) Potencia\n");
         printf("2) Resta                    6) Factorial\n");
         printf("3) Multiplicacion           7) Es primo?\n");
         printf("4) Division                 8) MCD\n");
         printf("M+ M- MR MC                 H) Historial        0) Salir\n\n");
-    
-    do
-    {
         printf("Opcion> ");
         scanf(" %c", &opcion1);
 
@@ -35,9 +42,17 @@ int main() {
         {
         case '1':
             printf("a: ");
-            scanf("%d", &a);
+            if(scanf("%d", &a) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); // Limpia el buffer de la entrada leyendo cada letra hasta el salto de linea 
+                break;
+            }
             printf("b: ");
-            scanf("%d", &b);
+            if(scanf("%d", &b) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
             resultado = a + b;
             ultimo = resultado;
             hayUltimo = 1;
@@ -48,9 +63,17 @@ int main() {
             break;
         case '2':
             printf("a: ");
-            scanf("%d", &a);
-             printf("b: ");
-            scanf("%d", &b);
+            if(scanf("%d", &a) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
+            printf("b: ");
+            if(scanf("%d", &b) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
             resultado = a - b;
             ultimo = resultado;
             hayUltimo = 1;
@@ -61,10 +84,23 @@ int main() {
             break;
         case '3':
             printf("a: ");
-            scanf("%d", &a);
-             printf("b: ");
-            scanf("%d", &b);
-            resultado = a * b;
+            if(scanf("%d", &a) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
+            printf("b: ");
+            if(scanf("%d", &b) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
+            multiplicacion = a * b;
+            if((((a > 0 && b > 0) || (a < 0 && b < 0)) && multiplicacion < 0) || ((a > 0 && b < 0) || (a < 0 && b > 0)) && multiplicacion > 0){
+                printf("Error: overflow detectado.\n");
+                break;
+            }
+            resultado = multiplicacion;
             ultimo = resultado;
             hayUltimo = 1;
             historial[total_ops % 20] = 3;
@@ -74,19 +110,27 @@ int main() {
             break;
         case '4':
             printf("Numerador: ");
-            scanf("%d", &a);
-             printf("Denominador: ");
-            scanf("%d", &b);
+            if(scanf("%d", &a) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
+            printf("Denominador: ");
+            if(scanf("%d", &b) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
 
-            historial[total_ops % 20] = 4;
-            contadores[3]++;
-            total_ops++;
-            
             if (b == 0)
             {
                 printf("Error: division por 0. \n");
                 break;
             }
+            
+            historial[total_ops % 20] = 4;
+            contadores[3]++;
+            total_ops++;
             resultado = a / (double)b;
             ultimo = resultado;
             hayUltimo = 1;
@@ -94,14 +138,33 @@ int main() {
             printf("Modulo: %d\n", a % b);
             break;
         case '5':
-            resultado = 1;
+            potencia = 1;
+            overflow = 0;
             printf("a: ");
-            scanf("%d", &a);
+            if(scanf("%d", &a) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
             printf("n: ");
-            scanf("%d", &b);
-           for(int i = 1; i <= b;i++){
-               resultado = resultado*a;
+            if(scanf("%d", &b) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
+           for(int i = 1; i <= b; i++){
+               potencia = potencia*a;
+
+               if(a > 0 && b > 0 && potencia < 0){
+                printf("Error: overflow detectado.\n");
+                overflow = 1;
+                break;
+               }
            }
+           if(overflow == 1){
+            break;
+           }
+           resultado = potencia;
            ultimo = resultado;
            hayUltimo = 1;
            historial[total_ops % 20] = 5;
@@ -110,16 +173,34 @@ int main() {
            printf("%.2lf \n", resultado);
            break;
          case '6':
-            resultado = 1;
+            factorial = 1;
+            overflow = 0;
             printf("n: ");
-            scanf("%d", &a);
+            if(scanf("%d", &a) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
           while (a > 20 || a < 0){
             printf("Numero invalido ingrese otro: ");
-             scanf("%d", &a);
+            if(scanf("%d", &a) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                a = -1; // para que vuelva a pedir el numero
+            }
           }
            for(int i = 1; i <= a; i++){
-               resultado = resultado*i;
+               factorial = factorial*i;
+               if(a > 0 && factorial < 0){
+                printf("Error: overflow detectado.\n");
+                overflow = 1;
+                break;
+               }
            }
+           if(overflow == 1){
+            break;
+           }
+           resultado = factorial;
            ultimo = resultado;
            hayUltimo = 1;
            historial[total_ops % 20] = 6;
@@ -131,7 +212,11 @@ int main() {
             int esPrimo = 1;
 
             printf("a: ");
-            scanf("%d", &a);
+            if(scanf("%d", &a) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
 
             if(a <= 1){
                 printf("El numero no es primo \n");
@@ -160,13 +245,21 @@ int main() {
         }
         case '8':
             printf("a: ");
-            scanf("%d", &a);
+            if(scanf("%d", &a) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
 
             printf("b: ");
-            scanf("%d", &b);
+            if(scanf("%d", &b) != 1){
+                printf("Error: entrada invalida.\n");
+                while(getchar() != '\n'); 
+                break;
+            }
 
-            int primerA = a;
-            int primerB = b;
+            primerA = a;
+            primerB = b;
             if (a < 0) {
                 a = -a;
             }
@@ -221,12 +314,13 @@ int main() {
                 mem = 0;
                 printf("Memoria borrada.\n");
                 break;
+            } else {
+                printf("Opcion invalida\n");
             }
             break;
 
         case 'H':
-                int cantidad;
-                printf("===== HISTORIAL (ultimas 8 ops)=====\n");
+                printf("===== HISTORIAL (ultimas 20 ops)=====\n");
 
                 if(total_ops < 20){
                     cantidad = total_ops;
@@ -314,8 +408,8 @@ int main() {
                     break;
     
         case '0':
-        int masUsada = contadores[0];
-        int posiciones = 0;
+        masUsada = contadores[0];
+        posiciones = 0;
         for (int i = 1; i < 8; i++){
             if(contadores[i] > masUsada){
                 masUsada = contadores [i];
