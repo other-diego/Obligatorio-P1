@@ -6,9 +6,14 @@ int main() {
     int alto, ancho, centro, distancia;
     char matriz[50][50];
     printf("Ingrese un numero entre 3 y 20 ");
-    scanf("%d", &n);
+
+    if(scanf("%d", &n) != 1){
+        printf("Error: entrada invalida.\n");
+        return 0;
+    }
+
     if(n < 3 || n > 20){
-        printf("Numero invalido");
+        printf("Numero invalido\n");
         return 0;
     }
 
@@ -72,4 +77,6 @@ int main() {
         }
         printf("\n");
         }
+       
+    return 0;
 }

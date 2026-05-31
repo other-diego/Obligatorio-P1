@@ -11,7 +11,12 @@ int main() {
     
     printf("Ingrese numeros (0 termina, maximo 100): \n");
     printf("> ");
-    scanf("%d", &numero);
+
+   if(scanf("%d", &numero) != 1) {
+    printf("Error: entrada invalida.\n");
+    while (getchar() != '\n');
+    return 0;
+    }
 
     if (numero == 0){
         printf("Sin datos");
@@ -23,7 +28,12 @@ int main() {
 
     do {
         printf("> ");
-        scanf("%d", &numero);
+
+        if (scanf("%d", &numero) != 1) {
+        printf("Error: entrada invalida.\n");
+        while (getchar() != '\n');
+        break;
+    }
 
         if(numero == 0){
             break;
@@ -116,4 +126,5 @@ int main() {
 
         printf("\n");
     }
+    return 0;
 }

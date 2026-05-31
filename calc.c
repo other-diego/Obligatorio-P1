@@ -10,8 +10,8 @@ int main() {
     double mem = 0;
     double ultimo = 0;
     int hayUltimo = 0;
-    int historial[20];
-    int contadores[8] = {0};
+    int historial[20] = {0};
+    int contadores[9] = {0};
     int total_ops = 0;
     int overflow;
     int multiplicacion;
@@ -35,7 +35,7 @@ int main() {
         scanf(" %c", &opcion1);
 
         if(opcion1 == 'M'){
-            scanf(" %c", &opcion2);
+            scanf("%c", &opcion2);
         }
 
         switch (opcion1)
@@ -57,9 +57,9 @@ int main() {
             ultimo = resultado;
             hayUltimo = 1;
             historial[total_ops % 20] = 1;
-            contadores[0]++; //Suma en el contador de las sumas (por cada suma realizada, suma 1)
+            contadores[1]++; //Suma en el contador de las sumas (por cada suma realizada, suma 1)
             total_ops++; //por cada operación nueva suma 1
-            printf("Resultado: %d + %d = %.0f \n", a, b, resultado);
+            printf("Resultado: %d + %d = %.0f\n", a, b, resultado);
             break;
         case '2':
             printf("a: ");
@@ -78,9 +78,9 @@ int main() {
             ultimo = resultado;
             hayUltimo = 1;
             historial[total_ops % 20] = 2;
-            contadores[1]++;
+            contadores[2]++;
             total_ops++;
-            printf("Resultado: %d - %d = %.0f \n", a, b, resultado);
+            printf("Resultado: %d - %d = %.0f\n", a, b, resultado);
             break;
         case '3':
             printf("a: ");
@@ -95,20 +95,21 @@ int main() {
                 while(getchar() != '\n'); 
                 break;
             }
-            multiplicacion = a * b;
-            if(
-    (((a > 0 && b > 0) || (a < 0 && b < 0)) && multiplicacion < 0)
-    ||
-    (((a > 0 && b < 0) || (a < 0 && b > 0)) && multiplicacion > 0)){
+            historial[total_ops % 20] = 3;
+            contadores[3]++;
+            total_ops++;
+            if(a < 0 || b < 0){
+                printf("Error: a y b deben ser numeros positivos.\n");
+                break;
+            }
+            if(b != 0 && a > 2147483647 / b){
                 printf("Error: overflow detectado.\n");
                 break;
             }
+            multiplicacion = a * b;
             resultado = multiplicacion;
             ultimo = resultado;
             hayUltimo = 1;
-            historial[total_ops % 20] = 3;
-            contadores[2]++;
-            total_ops++;
             printf("Resultado: %d x %d = %.0f \n", a, b, resultado);
             break;
         case '4':
@@ -125,19 +126,19 @@ int main() {
                 break;
             }
 
+            historial[total_ops % 20] = 4;
+            contadores[4]++;
+            total_ops++;
+            
             if (b == 0)
             {
-                printf("Error: division por 0. \n");
+                printf("Error: division por 0.\n");
                 break;
             }
-            
-            historial[total_ops % 20] = 4;
-            contadores[3]++;
-            total_ops++;
             resultado = a / (double)b;
             ultimo = resultado;
             hayUltimo = 1;
-            printf("Resultado: %d / %d = %.2f \n", a, b, resultado);
+            printf("Resultado: %d / %d = %.2f\n", a, b, resultado);
             printf("Modulo: %d\n", a % b);
             break;
         case '5':
@@ -155,14 +156,32 @@ int main() {
                 while(getchar() != '\n'); 
                 break;
             }
-           for(int i = 1; i <= b; i++){
-               potencia = potencia*a;
+            historial[total_ops % 20] = 5;
+            contadores[5]++;
+            total_ops++;
 
-               if(a > 0 && b > 0 && potencia < 0){
+            if(a == 0 && b == 0){
+                printf("Indefinido.\n");
+                break;
+            } else if(a == 0){
+                resultado = 0;
+                ultimo = resultado;
+                hayUltimo = 1;
+                printf("resultado: 0 ^ %d = 0\n", b);
+                break;
+            } else if (a < 0 || b < 0){
+                printf("Error: a y n deben ser positivos.\n");
+                break;
+            }
+
+           for(int i = 1; i <= b; i++){
+               if(potencia > 2147483647 / a){
                 printf("Error: overflow detectado.\n");
                 overflow = 1;
                 break;
                }
+
+               potencia = potencia*a;
            }
            if(overflow == 1){
             break;
@@ -170,10 +189,7 @@ int main() {
            resultado = potencia;
            ultimo = resultado;
            hayUltimo = 1;
-           historial[total_ops % 20] = 5;
-           contadores[4]++;
-           total_ops++;
-           printf("Resultado: %d ^ %d = %.2f \n", a, b, resultado);
+           printf("Resultado: %d ^ %d = %.0f\n", a, b, resultado);
            break;
          case '6':
             factorial = 1;
@@ -184,13 +200,13 @@ int main() {
                 while(getchar() != '\n'); 
                 break;
             }
-          while (a > 20 || a < 0){
-            printf("Numero invalido ingrese otro: ");
-            if(scanf("%d", &a) != 1){
-                printf("Error: entrada invalida.\n");
-                while(getchar() != '\n'); 
-                a = -1; // para que vuelva a pedir el numero
-            }
+            historial[total_ops % 20] = 6;
+            contadores[6]++;
+            total_ops++;
+
+          if(a > 20 || a < 0){
+            printf("Numero invalido: debe ser entre 0 y 20\n");
+            break;
           }
            for(int i = 1; i <= a; i++){
                if(factorial > 2147483647 / i){ 
@@ -198,7 +214,6 @@ int main() {
                 overflow = 1;
                 break;
                }
-
                factorial = factorial*i;
            }
            if(overflow == 1){
@@ -207,9 +222,6 @@ int main() {
            resultado = factorial;
            ultimo = resultado;
            hayUltimo = 1;
-           historial[total_ops % 20] = 6;
-           contadores[5]++;
-           total_ops++;
            printf("Resultado: %d! = %.0f\n",a, resultado);
            break;
        case '7': {
@@ -222,6 +234,9 @@ int main() {
                 break;
             }
 
+            historial[total_ops % 20] = 7;
+            contadores[7]++;
+            total_ops++;
             if(a <= 1){
                 printf("El numero no es primo \n");
             } else {
@@ -241,10 +256,6 @@ int main() {
                     printf("El numero no es primo \n");
                 }
             }
-
-            historial[total_ops % 20] = 7;
-            contadores[6]++;
-            total_ops++;
             break;
         }
         case '8':
@@ -261,6 +272,10 @@ int main() {
                 while(getchar() != '\n'); 
                 break;
             }
+
+            historial[total_ops % 20] = 8;
+            contadores[8]++;
+            total_ops++;
 
             primerA = a;
             primerB = b;
@@ -288,38 +303,41 @@ int main() {
             ultimo = resultado;
             hayUltimo = 1;
 
-            historial[total_ops % 20] = 8;
-            contadores[7]++;
-            total_ops++;
-
             printf("Resultado: gcd(%d, %d) = %.0lf\n", primerA, primerB, resultado);
             break;
         case 'M':
         if (opcion2 == '+') {
             if (hayUltimo == 0) {
                 printf("Error: todavia no hay ultimo resultado.\n");
+                while(getchar() != '\n');
             } else {
                 mem = mem + ultimo;
                 printf("Memoria: %.2lf\n", mem);
+                while(getchar() != '\n');
             }
             break;
         } else if(opcion2 == '-'){
             if (hayUltimo == 0) {
                 printf("Error: todavia no hay ultimo resultado.\n");
+                while(getchar() != '\n');
             } else {
                 mem = mem - ultimo;
                 printf("Memoria: %.2lf\n", mem);
+                while(getchar() != '\n');
             }
             break;
             } else if(opcion2 == 'R'){
                 printf("Memoria actual: %.2lf\n", mem);
+                while(getchar() != '\n');
                 break;
             } else if(opcion2 == 'C'){
                 mem = 0;
                 printf("Memoria borrada.\n");
+                while(getchar() != '\n');
                 break;
             } else {
                 printf("Opcion invalida\n");
+                while(getchar() != '\n');
             }
             break;
 
@@ -340,7 +358,7 @@ int main() {
                         posicion = (total_ops + i) % 20; // si el total de operaciones es 32, hace que empiece a mostrar desde la posición 12 del arreglo
                     }
 
-                    printf("[%02d]", i + 1); //rellena con 0 a la izq si el numero tiene menos dígitos que el ancho(acá sería 2)
+                    printf("[%02d] ", historial[posicion]); //rellena con 0 a la izq si el numero tiene menos dígitos que el ancho(acá sería 2)
 
                     switch (historial[posicion]){ //digo que operacion es, segun el numero que tengo en el historial
                         case 1:
@@ -371,31 +389,31 @@ int main() {
                         printf("\n");
                 }
                    printf("===== FRECUENCIA POR OPERACION =====\n\n");
-                for(int i = 0; i < 8; i++){
+                for(int i = 1; i < 9; i++){
                     if(contadores[i] > 0){
                         switch(i){
-                            case 0: 
+                            case 1: 
                               printf("Suma          ");
                               break;
-                            case 1:
+                            case 2:
                               printf("Resta         ");
                               break;
-                            case 2:
+                            case 3:
                               printf("Multiplicacion");
                               break;
-                            case 3:
+                            case 4:
                               printf("Division      ");
                               break;
-                            case 4: 
+                            case 5: 
                               printf("Potencia      ");
                               break;
-                            case 5: 
+                            case 6: 
                               printf("Factorial     ");
                               break;
-                            case 6:
+                            case 7:
                               printf("Es primo?     ");
                               break;
-                            case 7:
+                            case 8:
                               printf("MCD           ");
                               break;
                             }
@@ -408,13 +426,13 @@ int main() {
                         }
                     }
 
-                    printf("Memoria actual: %.2f\n", mem);
+                    printf("Memoria actual = %.2f\n", mem);
                     break;
     
         case '0':
-        masUsada = contadores[0];
-        posiciones = 0;
-        for (int i = 1; i < 8; i++){
+        masUsada = contadores[1];
+        posiciones = 1;
+        for (int i = 2; i < 9; i++){
             if(contadores[i] > masUsada){
                 masUsada = contadores [i];
                 posiciones = i;
@@ -423,44 +441,44 @@ int main() {
 
         printf("Operaciones realizadas: %d\n", total_ops);
         if(total_ops == 0){
-            printf("Sin operaciones registradas. Adios.");
+            printf("Sin operaciones registradas. Adios.\n");
             break;
         }
         printf("Mas usada: ");
         switch(posiciones){
-            case 0:
+            case 1:
                 printf("Suma");
                 break;
-            case 1: 
+            case 2: 
                 printf("Resta");
                 break;
-            case 2:
+            case 3:
                 printf("Multiplicacion");
                 break;
-            case 3:
+            case 4:
                 printf("Division");
                 break;
-            case 4: 
+            case 5: 
                 printf("Potencia");
                 break;
-            case 5: 
+            case 6: 
                 printf("Factorial");
                 break;
-            case 6:
+            case 7:
                 printf("Primo");
                 break;
-            case 7:
+            case 8:
                 printf("MCD");
                 break; 
         }
         printf(" (%d). Adios.", masUsada);
             break;
         default:
-            printf("Opcion invalida, ingrese otra opcion");
+            printf("Opcion invalida, ingrese otra opcion.\n");
+            while(getchar() != '\n');
             break;
         }
                     
     } while (opcion1 != '0');
-
     return 0;
 }
