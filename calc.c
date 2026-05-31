@@ -96,7 +96,10 @@ int main() {
                 break;
             }
             multiplicacion = a * b;
-            if((((a > 0 && b > 0) || (a < 0 && b < 0)) && multiplicacion < 0) || ((a > 0 && b < 0) || (a < 0 && b > 0)) && multiplicacion > 0){
+            if(
+    (((a > 0 && b > 0) || (a < 0 && b < 0)) && multiplicacion < 0)
+    ||
+    (((a > 0 && b < 0) || (a < 0 && b > 0)) && multiplicacion > 0)){
                 printf("Error: overflow detectado.\n");
                 break;
             }
@@ -170,7 +173,7 @@ int main() {
            historial[total_ops % 20] = 5;
            contadores[4]++;
            total_ops++;
-           printf("%.2lf \n", resultado);
+           printf("Resultado: %d ^ %d = %.2f \n", a, b, resultado);
            break;
          case '6':
             factorial = 1;
@@ -190,12 +193,13 @@ int main() {
             }
           }
            for(int i = 1; i <= a; i++){
-               factorial = factorial*i;
-               if(a > 0 && factorial < 0){
+               if(factorial > 2147483647 / i){ 
                 printf("Error: overflow detectado.\n");
                 overflow = 1;
                 break;
                }
+
+               factorial = factorial*i;
            }
            if(overflow == 1){
             break;
@@ -336,7 +340,7 @@ int main() {
                         posicion = (total_ops + i) % 20; // si el total de operaciones es 32, hace que empiece a mostrar desde la posición 12 del arreglo
                     }
 
-                    printf("[%d]", historial[posicion]);
+                    printf("[%02d]", i + 1); //rellena con 0 a la izq si el numero tiene menos dígitos que el ancho(acá sería 2)
 
                     switch (historial[posicion]){ //digo que operacion es, segun el numero que tengo en el historial
                         case 1:
@@ -418,6 +422,10 @@ int main() {
         }
 
         printf("Operaciones realizadas: %d\n", total_ops);
+        if(total_ops == 0){
+            printf("Sin operaciones registradas. Adios.");
+            break;
+        }
         printf("Mas usada: ");
         switch(posiciones){
             case 0:
